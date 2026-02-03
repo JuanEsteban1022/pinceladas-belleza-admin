@@ -1,0 +1,40 @@
+<div class="provider-form-container">
+    <div class="form-header">
+        <h2>{{isEdit ? 'Editar Proveedor' : 'Nuevo Proveedor'}}</h2>
+        <p-button label="Volver" icon="pi pi-arrow-left" class="p-button-outlined" (click)="cancel()"></p-button>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <form [formGroup]="providerForm" (ngSubmit)="saveProvider()">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="nombre">Nombre del Proveedor *</label>
+                    <input id="nombre" type="text" pInputText formControlName="nombre"
+                        placeholder="Ingrese el nombre del proveedor" />
+                    <small class="p-error"
+                        *ngIf="providerForm.get('nombre')?.invalid && providerForm.get('nombre')?.touched">
+                        El nombre es requerido y debe tener al menos 3 caracteres
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="contacto">Contacto *</label>
+                    <input id="contacto" type="text" pInputText formControlName="contacto"
+                        placeholder="correo@ejemplo.com" />
+                    <small class="p-error"
+                        *ngIf="providerForm.get('contacto')?.invalid && providerForm.get('contacto')?.touched">
+                        El contacto es requerido y debe ser un email válido
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <p-button label="Guardar" icon="pi pi-save" type="submit"
+                    [disabled]="providerForm.invalid || loading"></p-button>
+                <p-button label="Cancelar" icon="pi pi-times" class="p-button-outlined" (click)="cancel()"></p-button>
+            </div>
+        </form>
+    </p-card>
+</div>

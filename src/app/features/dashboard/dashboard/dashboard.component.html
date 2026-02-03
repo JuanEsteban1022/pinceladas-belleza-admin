@@ -1,0 +1,224 @@
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <div class="header-text">
+                <h1>Panel de Control</h1>
+                <p class="text-muted">Bienvenido al panel administrativo de Pinceladas de Belleza</p>
+            </div>
+            <div class="header-actions">
+                <p-button label="Actualizar Datos" icon="pi pi-refresh" (click)="refreshData()"
+                    [loading]="loading"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div *ngIf="loading" class="loading-container">
+        <p-skeleton width="100%" height="150px" class="mb-4"></p-skeleton>
+        <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+                <p-skeleton width="100%" height="120px" class="mb-4"></p-skeleton>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-12 lg:col-8">
+                <p-skeleton width="100%" height="400px" class="mb-4"></p-skeleton>
+            </div>
+            <div class="col-12 lg:col-4">
+                <p-skeleton width="100%" height="400px" class="mb-4"></p-skeleton>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!loading" class="dashboard-content">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <p-card class="stat-card products-card">
+                <div class="stat-content">
+                    <div class="stat-icon products">
+                        <i class="pi pi-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{stats.totalProducts}}</h3>
+                        <p>Productos</p>
+                        <small class="stat-change positive">
+                            <i class="pi pi-arrow-up"></i> 12% este mes
+                        </small>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card class="stat-card categories-card">
+                <div class="stat-content">
+                    <div class="stat-icon categories">
+                        <i class="pi pi-sitemap"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{stats.totalCategories}}</h3>
+                        <p>Categorías</p>
+                        <small class="stat-change positive">
+                            <i class="pi pi-arrow-up"></i> 2 nuevas
+                        </small>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card class="stat-card providers-card">
+                <div class="stat-content">
+                    <div class="stat-icon providers">
+                        <i class="pi pi-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{stats.totalProviders}}</h3>
+                        <p>Proveedores</p>
+                        <small class="stat-change neutral">
+                            <i class="pi pi-minus"></i> Sin cambios
+                        </small>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card class="stat-card orders-card">
+                <div class="stat-content">
+                    <div class="stat-icon orders">
+                        <i class="pi pi-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{stats.totalOrders}}</h3>
+                        <p>Pedidos</p>
+                        <small class="stat-change positive">
+                            <i class="pi pi-arrow-up"></i> 8% este mes
+                        </small>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card class="stat-card revenue-card">
+                <div class="stat-content">
+                    <div class="stat-icon revenue">
+                        <i class="pi pi-dollar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{formatCurrency(stats.totalRevenue)}}</h3>
+                        <p>Ingresos Totales</p>
+                        <small class="stat-change positive">
+                            <i class="pi pi-arrow-up"></i> 15% este mes
+                        </small>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Recent Orders -->
+            <div class="recent-orders-section">
+                <p-card header="Pedidos Recientes" class="full-height">
+                    <ng-template pTemplate="header">
+                        <div class="card-header-content">
+                            <span>Pedidos Recientes</span>
+                            <p-button icon="pi pi-external-link" class="p-button-outlined p-button-sm"
+                                routerLink="/orders"></p-button>
+                        </div>
+                    </ng-template>
+
+                    <p-table [value]="stats.recentOrders" [paginator]="true" [rows]="5" [scrollable]="true"
+                        scrollHeight="300px">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="min-width: 100px">ID</th>
+                                <th style="min-width: 200px">Cliente</th>
+                                <th style="min-width: 120px">Total</th>
+                                <th style="min-width: 120px">Estado</th>
+                                <th style="min-width: 120px">Fecha</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-order>
+                            <tr>
+                                <td><strong>{{order.id}}</strong></td>
+                                <td>{{order.customer}}</td>
+                                <td>{{formatCurrency(order.total)}}</td>
+                                <td>
+                                    <p-tag [value]="order.status" [severity]="getStatusSeverity(order.status)"></p-tag>
+                                </td>
+                                <td>{{formatDate(order.createdAt)}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </div>
+
+            <!-- Top Products -->
+            <div class="top-products-section">
+                <p-card header="Productos Más Vendidos" class="full-height">
+                    <ng-template pTemplate="header">
+                        <div class="card-header-content">
+                            <span>Productos Más Vendidos</span>
+                            <p-button icon="pi pi-external-link" class="p-button-outlined p-button-sm"
+                                routerLink="/products"></p-button>
+                        </div>
+                    </ng-template>
+
+                    <div class="top-products-list">
+                        <div *ngFor="let product of stats.topProducts; let i = index" class="product-item">
+                            <div class="product-rank">{{i + 1}}</div>
+                            <div class="product-info">
+                                <div class="product-name">{{product.name}}</div>
+                                <div class="product-category">{{product.category}}</div>
+                            </div>
+                            <div class="product-stats">
+                                <div class="product-sales">{{product.sales}} ventas</div>
+                                <div class="product-revenue">{{formatCurrency(product.revenue)}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+
+            <!-- Low Stock Alert -->
+            <div class="low-stock-section">
+                <p-card header="Alertas de Inventario" class="full-height">
+                    <ng-template pTemplate="header">
+                        <div class="card-header-content">
+                            <span>Alertas de Inventario</span>
+                            <p-badge [value]="stats.lowStockProducts.length.toString()" severity="danger"></p-badge>
+                        </div>
+                    </ng-template>
+
+                    <div class="low-stock-list">
+                        <div *ngFor="let product of stats.lowStockProducts" class="stock-item">
+                            <div class="stock-info">
+                                <div class="stock-name">{{product.name}}</div>
+                                <div class="stock-quantity">Stock: {{product.stock}} unidades</div>
+                            </div>
+                            <p-tag [value]="product.stock.toString()"
+                                [severity]="getStockSeverity(product.stock)"></p-tag>
+                        </div>
+                    </div>
+
+                    <div *ngIf="stats.lowStockProducts.length === 0" class="no-alerts">
+                        <i class="pi pi-check-circle"></i>
+                        <p>No hay alertas de inventario</p>
+                    </div>
+                </p-card>
+            </div>
+
+            <!-- Monthly Sales Chart -->
+            <div class="sales-chart-section">
+                <p-card header="Ventas Mensuales" class="full-height">
+                    <div class="chart-container">
+                        <div class="chart-bars">
+                            <div *ngFor="let month of stats.monthlySales" class="chart-bar">
+                                <div class="bar" [style.height.%]="(month.sales / 4000000) * 100"></div>
+                                <div class="bar-label">{{month.month}}</div>
+                                <div class="bar-value">{{formatCurrency(month.sales)}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,288 @@
+.product-form-container {
+    padding: 2rem;
+    background: linear-gradient(135deg, #fdf6f6 0%, #f9e8e8 100%);
+    min-height: 100vh;
+
+    .form-header {
+        margin-bottom: 2rem;
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(212, 165, 165, 0.15);
+
+            .header-text {
+                h2 {
+                    color: #8b5a5a;
+                    margin: 0 0 0.5rem 0;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #ffe2c9 0%, #b87373 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+
+                .text-muted {
+                    color: #a67c7c;
+                    margin: 0;
+                    font-size: 1.1rem;
+                }
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 1rem;
+            }
+        }
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            &.full-width {
+                grid-column: 1 / -1;
+            }
+
+            label {
+                font-weight: 600;
+                color: #8b5a5a;
+                font-size: 0.95rem;
+            }
+
+            input[pInputText],
+            p-inputNumber,
+            p-dropdown,
+            textarea[pInputTextarea] {
+                width: 100%;
+            }
+
+            .p-error {
+                color: #e74c3c;
+                font-size: 0.85rem;
+                margin-top: 0.25rem;
+            }
+
+            .form-help {
+                color: #a67c7c;
+                font-size: 0.85rem;
+                font-style: italic;
+            }
+
+            .image-preview {
+                margin-top: 1rem;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 16px rgba(212, 165, 165, 0.2);
+                max-width: 400px;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 12px;
+                }
+            }
+        }
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        padding-top: 2rem;
+        border-top: 1px solid #f4e8e8;
+    }
+}
+
+// PrimeNG Component Overrides
+:host ::ng-deep {
+    .p-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(212, 165, 165, 0.15);
+        overflow: hidden;
+
+        .p-card-content {
+            padding: 2rem;
+        }
+    }
+
+    .p-inputtext {
+        border-radius: 8px;
+        border: 2px solid #f4e8e8;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+            border-color: #d4a5a5;
+            box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+        }
+
+        &.ng-invalid.ng-touched {
+            border-color: #e74c3c;
+        }
+    }
+
+    .p-inputtextarea {
+        border-radius: 8px;
+        border: 2px solid #f4e8e8;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        resize: vertical;
+
+        &:focus {
+            border-color: #d4a5a5;
+            box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+        }
+
+        &.ng-invalid.ng-touched {
+            border-color: #e74c3c;
+        }
+    }
+
+    .p-inputnumber {
+        width: 100%;
+
+        .p-inputnumber-input {
+            border-radius: 8px;
+            border: 2px solid #f4e8e8;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+
+            &:focus {
+                border-color: #d4a5a5;
+                box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+            }
+
+            &.ng-invalid.ng-touched {
+                border-color: #e74c3c;
+            }
+        }
+    }
+
+    .p-dropdown {
+        border-radius: 8px;
+        border: 2px solid #f4e8e8;
+        transition: all 0.3s ease;
+
+        &:not(.p-disabled):hover {
+            border-color: #d4a5a5;
+        }
+
+        &.p-focus {
+            border-color: #d4a5a5;
+            box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+        }
+
+        &.ng-invalid.ng-touched {
+            border-color: #e74c3c;
+        }
+
+        .p-dropdown-label {
+            padding: 0.75rem 1rem;
+        }
+
+        .p-dropdown-trigger {
+            width: 3rem;
+        }
+    }
+
+    .p-button {
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+
+        &.p-button-outlined {
+            border-color: #d4a5a5;
+            color: #d4a5a5;
+
+            &:hover {
+                background: #d4a5a5;
+                color: white;
+            }
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .product-form-container {
+        padding: 1rem;
+
+        .form-header {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+
+                .header-text {
+                    h2 {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+
+            .form-field {
+                &.full-width {
+                    grid-column: 1;
+                }
+            }
+        }
+
+        .form-actions {
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .p-button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// Loading State
+.p-card[loading] {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

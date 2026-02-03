@@ -1,0 +1,104 @@
+<div class="product-form-container">
+    <div class="form-header">
+        <div class="header-content">
+            <div class="header-text">
+                <h2>{{isEdit ? 'Editar Producto' : 'Nuevo Producto'}}</h2>
+                <p class="text-muted">{{isEdit ? 'Modifica los datos del producto' : 'Registra un nuevo producto en el
+                    inventario'}}</p>
+            </div>
+            <div class="header-actions">
+                <p-button label="Volver" icon="pi pi-arrow-left" class="p-button-outlined"
+                    (click)="cancel()"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="nombre">Nombre del Producto *</label>
+                    <input id="nombre" type="text" pInputText formControlName="nombre"
+                        placeholder="Ingrese el nombre del producto" />
+                    <small class="p-error" *ngIf="nombre?.invalid && nombre?.touched">
+                        El nombre es requerido y debe tener al menos 3 caracteres
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="precio">Precio *</label>
+                    <p-inputNumber id="precio" formControlName="precio" mode="currency" currency="COP" locale="es-CO"
+                        placeholder="0" [min]="0">
+                    </p-inputNumber>
+                    <small class="p-error" *ngIf="precio?.invalid && precio?.touched">
+                        El precio es requerido y debe ser mayor o igual a 0
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="cantidadStock">Cantidad en Stock *</label>
+                    <p-inputNumber id="cantidadStock" formControlName="cantidadStock" [min]="0" placeholder="0">
+                    </p-inputNumber>
+                    <small class="p-error" *ngIf="cantidadStock?.invalid && cantidadStock?.touched">
+                        La cantidad es requerida y debe ser mayor o igual a 0
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="categoriaId">Categoría *</label>
+                    <p-dropdown id="categoriaId" formControlName="categoriaId" [options]="categories"
+                        optionLabel="nombreCategoria" optionValue="id" placeholder="Seleccione una categoría"
+                        [filter]="true">
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="categoriaId?.invalid && categoriaId?.touched">
+                        La categoría es requerida
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="proveedorId">Proveedor *</label>
+                    <p-dropdown id="proveedorId" formControlName="proveedorId" [options]="providers"
+                        optionLabel="nombre" optionValue="id" placeholder="Seleccione un proveedor" [filter]="true">
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="proveedorId?.invalid && proveedorId?.touched">
+                        El proveedor es requerido
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="urlDrive">URL de Imagen (Drive)</label>
+                    <input id="urlDrive" type="text" pInputText formControlName="urlDrive"
+                        placeholder="https://drive.google.com/..." />
+                    <small class="form-help">
+                        Opcional: Enlace a una imagen del producto en Google Drive
+                    </small>
+                </div>
+
+                <div class="form-field full-width">
+                    <label for="descripcion">Descripción *</label>
+                    <textarea id="descripcion" pInputTextarea formControlName="descripcion" rows="4"
+                        placeholder="Describe el producto detalladamente..." [autoResize]="true">
+                    </textarea>
+                    <small class="p-error" *ngIf="descripcion?.invalid && descripcion?.touched">
+                        La descripción es requerida y debe tener al menos 10 caracteres
+                    </small>
+                </div>
+
+                <div class="form-field full-width" *ngIf="urlDrive?.value">
+                    <label>Vista Previa de Imagen</label>
+                    <div class="image-preview">
+                        <img [src]="urlDrive?.value" alt="Vista previa" (error)="onImageError($event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <p-button label="Guardar" icon="pi pi-save" type="submit"
+                    [disabled]="productForm.invalid || loading"></p-button>
+                <p-button label="Cancelar" icon="pi pi-times" class="p-button-outlined" (click)="cancel()"></p-button>
+            </div>
+        </form>
+    </p-card>
+</div>

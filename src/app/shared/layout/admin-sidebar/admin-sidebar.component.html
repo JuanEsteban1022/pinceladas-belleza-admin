@@ -1,0 +1,57 @@
+<div class="admin-sidebar" [class.collapsed]="!visible">
+    <div class="sidebar-header">
+        <img src="/assets/logos/logo-pinceladas.png" alt="Pinceladas de Belleza" class="logo">
+        <h3 class="sidebar-title" *ngIf="visible">Panel Admin</h3>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+                    <i class="pi pi-home"></i>
+                    <span *ngIf="visible">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/providers" routerLinkActive="active">
+                    <i class="pi pi-users"></i>
+                    <span *ngIf="visible">Proveedores</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/categories" routerLinkActive="active">
+                    <i class="pi pi-sitemap"></i>
+                    <span *ngIf="visible">Categorías</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/products" routerLinkActive="active">
+                    <i class="pi pi-box"></i>
+                    <span *ngIf="visible">Productos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/orders" routerLinkActive="active">
+                    <i class="pi pi-shopping-cart"></i>
+                    <span *ngIf="visible">Pedidos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/" target="_blank">
+                    <i class="pi pi-external-link"></i>
+                    <span *ngIf="visible">Ver Tienda</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <button class="logout-btn" (click)="logout()">
+            <i class="pi pi-sign-out"></i>
+            <span *ngIf="visible">Cerrar Sesión</span>
+        </button>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" *ngIf="!visible" (click)="closeSidebar.emit()"></div>
+</div>

@@ -1,0 +1,51 @@
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="admin-sidebar" [class.collapsed]="!sidebarVisible">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="pi pi-sparkles"></i>
+                <span class="logo-text" *ngIf="sidebarVisible">Pinceladas de Belleza</span>
+            </div>
+            <button class="sidebar-toggle" (click)="onToggleSidebar()">
+                <i class="pi pi-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item" *ngFor="let item of menuItems">
+                    <a class="nav-link" [routerLink]="item.routerLink" routerLinkActive="active">
+                        <i class="nav-icon" [class]="item.icon"></i>
+                        <span class="nav-text" *ngIf="sidebarVisible">{{item.label}}</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main" [class.sidebar-collapsed]="!sidebarVisible">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="mobile-sidebar-toggle" (click)="onToggleSidebar()">
+                        <i class="pi pi-bars"></i>
+                    </button>
+                    <h1 class="page-title">Panel de Control</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="pi pi-user"></i>
+                        <span>Administrador</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="admin-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

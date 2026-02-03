@@ -1,0 +1,99 @@
+<div class="products-container">
+    <div class="products-header">
+        <div class="header-content">
+            <div class="header-text">
+                <h2>Gestión de Productos</h2>
+                <p class="text-muted">Administra el inventario de productos de Pinceladas de Belleza</p>
+            </div>
+            <div class="header-actions">
+                <p-button label="Nuevo Producto" icon="pi pi-plus" (click)="createProduct()"
+                    class="p-button-outlined"></p-button>
+                <p-button icon="pi pi-refresh" (click)="refreshData()" class="p-button-rounded"
+                    pTooltip="Actualizar datos"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="table-header">
+                <span>Lista de Productos</span>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="Buscar producto..." [(ngModel)]="searchValue" />
+                </span>
+            </div>
+        </ng-template>
+
+        <p-table [value]="products" [loading]="loading" [paginator]="true" [rows]="10"
+            [globalFilterFields]="['nombre', 'descripcion']" filterDisplay="menu" [scrollable]="true"
+            scrollHeight="400px">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="min-width: 80px">ID</th>
+                    <th style="min-width: 200px">Nombre</th>
+                    <th style="min-width: 250px">Descripción</th>
+                    <th style="min-width: 120px">Precio</th>
+                    <th style="min-width: 100px">Stock</th>
+                    <th style="min-width: 150px">Categoría</th>
+                    <th style="min-width: 150px">Proveedor</th>
+                    <th style="min-width: 120px">Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td><strong>#{{product.id}}</strong></td>
+                    <td>
+                        <div class="product-name">
+                            {{product.nombre}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product-description">
+                            {{product.descripcion | slice:0:80}}{{product.descripcion.length > 80 ? '...' : ''}}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="price">{{formatCurrency(product.precio)}}</span>
+                    </td>
+                    <td>
+                        <p-tag [value]="product.cantidadStock.toString()"
+                            [severity]="getStockSeverity(product.cantidadStock)"></p-tag>
+                    </td>
+                    <td>
+                        <p-tag [value]="getCategoryName(product.categoriaId)" severity="info"></p-tag>
+                    </td>
+                    <td>
+                        <p-tag [value]="getProviderName(product.proveedorId)" severity="secondary"></p-tag>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <p-button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
+                                (click)="viewProduct(product)" pTooltip="Ver detalles"></p-button>
+                            <p-button icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info"
+                                (click)="editProduct(product)" pTooltip="Editar"></p-button>
+                            <p-button icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                                (click)="deleteProduct(product)" pTooltip="Eliminar"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-message">
+                            <i class="pi pi-inbox"></i>
+                            <p>No hay productos registrados</p>
+                            <p-button label="Crear primer producto" icon="pi pi-plus" (click)="createProduct()"
+                                class="mt-3"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>

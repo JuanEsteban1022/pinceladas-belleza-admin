@@ -1,0 +1,132 @@
+<div class="orders-container">
+    <div class="orders-header">
+        <h2>Gestión de Pedidos</h2>
+        <div class="header-actions">
+            <p-button label="Exportar" icon="pi pi-download" class="p-button-outlined"></p-button>
+            <p-button label="Actualizar" icon="pi pi-refresh" (click)="loadOrders()"></p-button>
+        </div>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <p-table [value]="orders" [loading]="loading" [paginator]="true" [rows]="10"
+            [globalFilterFields]="['id', 'customer', 'customerEmail']" filterDisplay="menu">
+            <ng-template pTemplate="caption">
+                <div class="table-header">
+                    <h5>Lista de Pedidos</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input type="text" pInputText placeholder="Buscar pedido..." [(ngModel)]="searchValue" />
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Email</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td><strong>{{order.id}}</strong></td>
+                    <td>{{order.customer}}</td>
+                    <td>{{order.customerEmail}}</td>
+                    <td>{{order.total | currency:'COP':'$'}}</td>
+                    <td>
+                        <p-tag [value]="order.status" [severity]="getStatusSeverity(order.status)"></p-tag>
+                    </td>
+                    <td>{{formatDate(order.createdAt)}}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <p-button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-info"
+                                (click)="viewOrderDetails(order)" pTooltip="Ver detalles"></p-button>
+
+                            <p-splitButton icon="pi pi-cog" class="p-button-rounded p-button-text p-button-secondary"
+                                [model]="getStatusMenuItems(order)" pTooltip="Cambiar estado"></p-splitButton>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+
+    <!-- Order Details Dialog -->
+    <p-dialog header="Detalles del Pedido" [(visible)]="displayOrderDialog" [modal]="true" [style]="{width: '70vw'}"
+        [draggable]="false" [resizable]="false">
+        <div *ngIf="selectedOrder" class="order-details">
+            <div class="order-info-grid">
+                <div class="info-section">
+                    <h4>Información del Pedido</h4>
+                    <div class="info-item">
+                        <strong>ID:</strong> {{selectedOrder.id}}
+                    </div>
+                    <div class="info-item">
+                        <strong>Fecha:</strong> {{formatDate(selectedOrder.createdAt)}}
+                    </div>
+                    <div class="info-item">
+                        <strong>Estado:</strong>
+                        <p-tag [value]="selectedOrder.status"
+                            [severity]="getStatusSeverity(selectedOrder.status)"></p-tag>
+                    </div>
+                    <div class="info-item">
+                        <strong>Método de Pago:</strong> {{selectedOrder.paymentMethod}}
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Información del Cliente</h4>
+                    <div class="info-item">
+                        <strong>Nombre:</strong> {{selectedOrder.customer}}
+                    </div>
+                    <div class="info-item">
+                        <strong>Email:</strong> {{selectedOrder.customerEmail}}
+                    </div>
+                    <div class="info-item">
+                        <strong>Dirección de Envío:</strong> {{selectedOrder.shippingAddress}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-items-section">
+                <h4>Productos del Pedido</h4>
+                <p-table [value]="selectedOrder.items" [paginator]="false">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>{{item.productName}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.unitPrice | currency:'COP':'$'}}</td>
+                            <td>{{item.subtotal | currency:'COP':'$'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                            <td><strong>{{selectedOrder.total | currency:'COP':'$'}}</strong></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <p-button label="Cerrar" icon="pi pi-times" (click)="displayOrderDialog = false"
+                class="p-button-outlined"></p-button>
+        </ng-template>
+    </p-dialog>
+</div>

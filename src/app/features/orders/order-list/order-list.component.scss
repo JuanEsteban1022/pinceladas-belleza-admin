@@ -1,0 +1,87 @@
+.orders-container {
+    padding: 1rem;
+}
+
+.orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.order-details {
+    .order-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .info-section {
+        h4 {
+            margin-bottom: 1rem;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+    }
+
+    .info-item {
+        margin-bottom: 0.75rem;
+
+        strong {
+            color: #6b7280;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .order-items-section {
+        h4 {
+            margin-bottom: 1rem;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+    }
+}
+
+.text-right {
+    text-align: right;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 0.5rem;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    padding: 0.75rem 0.5rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    padding: 1.5rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 0 1.5rem 1.5rem;
+}

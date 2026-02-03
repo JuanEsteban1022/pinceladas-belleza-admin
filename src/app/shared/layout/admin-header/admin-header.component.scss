@@ -1,0 +1,85 @@
+.admin-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 250px;
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 999;
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .menu-toggle {
+            background: #3a2a24;
+            border: none;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: #2a1a14;
+                transform: scale(1.05);
+            }
+        }
+
+        .page-title {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #3a2a24;
+            font-weight: 600;
+        }
+    }
+
+    .header-right {
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .user-name {
+                font-weight: 500;
+                color: #3a2a24;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #f7d7bd;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #3a2a24;
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+.sidebar-collapsed .admin-header {
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        left: 0;
+        padding: 0 1rem;
+
+        .page-title {
+            font-size: 1.2rem;
+        }
+    }
+}

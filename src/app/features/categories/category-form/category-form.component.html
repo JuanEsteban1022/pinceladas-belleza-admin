@@ -1,0 +1,40 @@
+<div class="category-form-container">
+    <div class="form-header">
+        <h2>{{isEdit ? 'Editar Categoría' : 'Nueva Categoría'}}</h2>
+        <p-button label="Volver" icon="pi pi-arrow-left" class="p-button-outlined" (click)="cancel()"></p-button>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="nombreCategoria">Nombre de la Categoría *</label>
+                    <input id="nombreCategoria" type="text" pInputText formControlName="nombreCategoria"
+                        placeholder="Ingrese el nombre de la categoría" />
+                    <small class="p-error"
+                        *ngIf="categoryForm.get('nombreCategoria')?.invalid && categoryForm.get('nombreCategoria')?.touched">
+                        El nombre es requerido y debe tener al menos 3 caracteres
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="estado">Estado *</label>
+                    <p-toggleButton formControlName="estado" onLabel="Activo" offLabel="Inactivo" onIcon="pi pi-check"
+                        offIcon="pi pi-times"></p-toggleButton>
+                    <small class="p-error"
+                        *ngIf="categoryForm.get('estado')?.invalid && categoryForm.get('estado')?.touched">
+                        El estado es requerido
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <p-button label="Guardar" icon="pi pi-save" type="submit"
+                    [disabled]="categoryForm.invalid || loading"></p-button>
+                <p-button label="Cancelar" icon="pi pi-times" class="p-button-outlined" (click)="cancel()"></p-button>
+            </div>
+        </form>
+    </p-card>
+</div>

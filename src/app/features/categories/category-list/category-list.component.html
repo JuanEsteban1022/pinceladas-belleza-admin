@@ -1,0 +1,56 @@
+<div class="categories-container">
+    <div class="categories-header">
+        <h2>Gestión de Categorías</h2>
+        <p-button label="Nueva Categoría" icon="pi pi-plus" routerLink="/categories/new"></p-button>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <p-table [value]="categories" [loading]="loading" [paginator]="true" [rows]="10"
+            [globalFilterFields]="['nombreCategoria']" filterDisplay="menu">
+            <ng-template pTemplate="caption">
+                <div class="table-header">
+                    <h5>Lista de Categorías</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input type="text" pInputText placeholder="Buscar categoría..." [(ngModel)]="searchValue" />
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-category>
+                <tr>
+                    <td>{{category.id}}</td>
+                    <td>{{category.nombreCategoria}}</td>
+                    <td>
+                        <span [class]="category.estado ? 'status-badge active' : 'status-badge inactive'">
+                            {{category.estado ? 'Activo' : 'Inactivo'}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <p-button icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info"
+                                [routerLink]="['/categories/edit', category.id]" pTooltip="Editar"></p-button>
+                            <p-button [icon]="category.estado ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                                class="p-button-rounded p-button-text p-button-warning"
+                                (click)="toggleCategoryStatus(category)"
+                                [pTooltip]="category.estado ? 'Desactivar' : 'Activar'"></p-button>
+                            <p-button icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                                (click)="deleteCategory(category)" pTooltip="Eliminar"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>
