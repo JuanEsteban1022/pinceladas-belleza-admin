@@ -7,8 +7,8 @@
                     inventario'}}</p>
             </div>
             <div class="header-actions">
-                <p-button label="Volver" icon="pi pi-arrow-left" class="p-button-outlined"
-                    (click)="cancel()"></p-button>
+                <button pButton label="Volver" icon="pi pi-arrow-left" class="p-button-outlined"
+                    (click)="cancel()"></button>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
 
                 <div class="form-field">
                     <label for="categoriaId">Categoría *</label>
-                    <p-dropdown id="categoriaId" formControlName="categoriaId" [options]="categories"
+                    <p-dropdown appendTo="body" id="categoriaId" formControlName="categoriaId" [options]="categories"
                         optionLabel="nombreCategoria" optionValue="id" placeholder="Seleccione una categoría"
                         [filter]="true">
                     </p-dropdown>
@@ -59,7 +59,7 @@
 
                 <div class="form-field">
                     <label for="proveedorId">Proveedor *</label>
-                    <p-dropdown id="proveedorId" formControlName="proveedorId" [options]="providers"
+                    <p-dropdown appendTo="body" id="proveedorId" formControlName="proveedorId" [options]="providers"
                         optionLabel="nombre" optionValue="id" placeholder="Seleccione un proveedor" [filter]="true">
                     </p-dropdown>
                     <small class="p-error" *ngIf="proveedorId?.invalid && proveedorId?.touched">
@@ -67,13 +67,33 @@
                     </small>
                 </div>
 
-                <div class="form-field">
+                <!--    <div class="form-field">
                     <label for="urlDrive">URL de Imagen (Drive)</label>
                     <input id="urlDrive" type="text" pInputText formControlName="urlDrive"
-                        placeholder="https://drive.google.com/..." />
+                        placeholder="https://drive.google.com/..." (blur)="onUrlDriveChange()" />
                     <small class="form-help">
                         Opcional: Enlace a una imagen del producto en Google Drive
                     </small>
+                </div>-->
+
+                <div class="form-field">
+                    <label>Imágenes de Google Drive</label>
+                    <div class="drive-images-section">
+                        <div class="button-group">
+                            <button pButton label="Seleccionar Imágenes de Drive" icon="pi pi-google"
+                                class="p-button-outlined" (click)="abrirSelectorGoogleDrive()"
+                                [loading]="loadingImages">
+                            </button>
+                            <button pButton label="Validar Imágenes" icon="pi pi-check"
+                                class="p-button-outlined p-button-help" (click)="validateImages()"
+                                *ngIf="imagenesSeleccionadas.length > 0">
+                            </button>
+                        </div>
+                        <small class="form-help">
+                            Selecciona múltiples imágenes desde tu Google Drive. Las imágenes deben ser públicas para
+                            poder visualizarse.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-field full-width">
@@ -89,15 +109,29 @@
                 <div class="form-field full-width" *ngIf="urlDrive?.value">
                     <label>Vista Previa de Imagen</label>
                     <div class="image-preview">
-                        <img [src]="urlDrive?.value" alt="Vista previa" (error)="onImageError($event)" />
+                        <img [src]="imagenesSeleccionadas[0]" alt="Vista previa" (error)="onImageError($event)" />
+                    </div>
+                </div>
+
+                <div class="form-field full-width" *ngIf="imagenesSeleccionadas.length > 0">
+                    <label>Imágenes Seleccionadas ({{imagenesSeleccionadas.length}})</label>
+                    <div class="images-gallery">
+                        <div class="image-item" *ngFor="let imagen of imagenesSeleccionadas; let i = index">
+                            <img [src]="imagen" alt="Imagen {{i + 1}}" (error)="onImageError($event)" />
+                            <div class="image-overlay">
+                                <button pButton icon="pi pi-times" class="p-button-rounded p-button-danger"
+                                    (click)="eliminarImagen(i)" size="small">
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-actions">
-                <p-button label="Guardar" icon="pi pi-save" type="submit"
-                    [disabled]="productForm.invalid || loading"></p-button>
-                <p-button label="Cancelar" icon="pi pi-times" class="p-button-outlined" (click)="cancel()"></p-button>
+                <button pButton label="Guardar" icon="pi pi-save" type="submit" class="p-button-success "
+                    [disabled]="productForm.invalid || loading"></button>
+                <button pButton label="Cancelar" icon="pi pi-times" class="p-button-danger" (click)="cancel()"></button>
             </div>
         </form>
     </p-card>

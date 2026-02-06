@@ -1,7 +1,7 @@
 <div class="provider-form-container">
     <div class="form-header">
         <h2>{{isEdit ? 'Editar Proveedor' : 'Nuevo Proveedor'}}</h2>
-        <p-button label="Volver" icon="pi pi-arrow-left" class="p-button-outlined" (click)="cancel()"></p-button>
+        <button pButton label="Volver" icon="pi pi-arrow-left" class="p-button-outlined" (click)="cancel()"></button>
     </div>
 
     <p-toast></p-toast>
@@ -31,9 +31,10 @@
             </div>
 
             <div class="form-actions">
-                <p-button label="Guardar" icon="pi pi-save" type="submit"
-                    [disabled]="providerForm.invalid || loading"></p-button>
-                <p-button label="Cancelar" icon="pi pi-times" class="p-button-outlined" (click)="cancel()"></p-button>
+                <button pButton label="Guardar" icon="pi pi-save" type="submit"
+                    [disabled]="providerForm.invalid || loading"></button>
+                <button pButton label="Cancelar" icon="pi pi-times" class="p-button-outlined"
+                    (click)="cancel()"></button>
             </div>
         </form>
     </p-card>

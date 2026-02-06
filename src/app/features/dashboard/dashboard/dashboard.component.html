@@ -7,8 +7,8 @@
                 <p class="text-muted">Bienvenido al panel administrativo de Pinceladas de Belleza</p>
             </div>
             <div class="header-actions">
-                <p-button label="Actualizar Datos" icon="pi pi-refresh" (click)="refreshData()"
-                    [loading]="loading"></p-button>
+                <button pButton label="Actualizar Datos" icon="pi pi-refresh" (click)="refreshData()"
+                    [loading]="loading"></button>
             </div>
         </div>
     </div>
@@ -43,9 +43,12 @@
                     <div class="stat-info">
                         <h3>{{stats.totalProducts}}</h3>
                         <p>Productos</p>
-                        <small class="stat-change positive">
-                            <i class="pi pi-arrow-up"></i> 12% este mes
-                        </small>
+                        <!-- <small class="stat-change"
+                            [ngClass]="stats.productGrowth > 0 ? 'positive' : stats.productGrowth < 0 ? 'negative' : 'neutral'">
+                            <i class="pi"
+                                [ngClass]="stats.productGrowth > 0 ? 'pi-arrow-up' : stats.productGrowth < 0 ? 'pi-arrow-down' : 'pi-minus'"></i>
+                            {{stats.productGrowth > 0 ? stats.productGrowth + '%' : stats.productGrowth < 0 ?
+                                abs(stats.productGrowth) + '%' : 'Sin cambios' }} este mes </small> -->
                     </div>
                 </div>
             </p-card>
@@ -58,9 +61,12 @@
                     <div class="stat-info">
                         <h3>{{stats.totalCategories}}</h3>
                         <p>Categorías</p>
-                        <small class="stat-change positive">
-                            <i class="pi pi-arrow-up"></i> 2 nuevas
-                        </small>
+                        <!-- <small class="stat-change"
+                            [ngClass]="stats.categoryGrowth > 0 ? 'positive' : stats.categoryGrowth < 0 ? 'negative' : 'neutral'">
+                            <i class="pi"
+                                [ngClass]="stats.categoryGrowth > 0 ? 'pi-arrow-up' : stats.categoryGrowth < 0 ? 'pi-arrow-down' : 'pi-minus'"></i>
+                            {{stats.categoryGrowth > 0 ? stats.categoryGrowth + ' nuevas' : stats.categoryGrowth < 0 ?
+                                abs(stats.categoryGrowth) + ' eliminadas' : 'Sin cambios' }} </small> -->
                     </div>
                 </div>
             </p-card>
@@ -73,9 +79,12 @@
                     <div class="stat-info">
                         <h3>{{stats.totalProviders}}</h3>
                         <p>Proveedores</p>
-                        <small class="stat-change neutral">
-                            <i class="pi pi-minus"></i> Sin cambios
-                        </small>
+                        <!-- <small class="stat-change"
+                            [ngClass]="stats.providerGrowth > 0 ? 'positive' : stats.providerGrowth < 0 ? 'negative' : 'neutral'">
+                            <i class="pi"
+                                [ngClass]="stats.providerGrowth > 0 ? 'pi-arrow-up' : stats.providerGrowth < 0 ? 'pi-arrow-down' : 'pi-minus'"></i>
+                            {{stats.providerGrowth > 0 ? stats.providerGrowth + ' nuevos' : stats.providerGrowth < 0 ?
+                                abs(stats.providerGrowth) + ' eliminados' : 'Sin cambios' }} </small> -->
                     </div>
                 </div>
             </p-card>
@@ -88,9 +97,9 @@
                     <div class="stat-info">
                         <h3>{{stats.totalOrders}}</h3>
                         <p>Pedidos</p>
-                        <small class="stat-change positive">
+                        <!-- <small class="stat-change positive">
                             <i class="pi pi-arrow-up"></i> 8% este mes
-                        </small>
+                        </small> -->
                     </div>
                 </div>
             </p-card>
@@ -103,9 +112,9 @@
                     <div class="stat-info">
                         <h3>{{formatCurrency(stats.totalRevenue)}}</h3>
                         <p>Ingresos Totales</p>
-                        <small class="stat-change positive">
+                        <!-- <small class="stat-change positive">
                             <i class="pi pi-arrow-up"></i> 15% este mes
-                        </small>
+                        </small> -->
                     </div>
                 </div>
             </p-card>
@@ -119,8 +128,8 @@
                     <ng-template pTemplate="header">
                         <div class="card-header-content">
                             <span>Pedidos Recientes</span>
-                            <p-button icon="pi pi-external-link" class="p-button-outlined p-button-sm"
-                                routerLink="/orders"></p-button>
+                            <button pButton icon="pi pi-external-link" class="p-button-outlined p-button-sm"
+                                routerLink="/orders"></button>
                         </div>
                     </ng-template>
 
@@ -156,8 +165,8 @@
                     <ng-template pTemplate="header">
                         <div class="card-header-content">
                             <span>Productos Más Vendidos</span>
-                            <p-button icon="pi pi-external-link" class="p-button-outlined p-button-sm"
-                                routerLink="/products"></p-button>
+                            <button pButton icon="pi pi-external-link" class="p-button-outlined p-button-sm"
+                                routerLink="/products"></button>
                         </div>
                     </ng-template>
 

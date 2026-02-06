@@ -95,16 +95,19 @@ export class ProductListComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.productService.deleteProduct(product.id).subscribe({
-          next: () => {
+          next: (response) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
-              detail: 'Producto eliminado correctamente'
+              detail: response || 'Producto eliminado correctamente'
             });
             this.loadProducts();
           },
           error: (error: any) => {
             console.error('Error deleting product:', error);
+            console.error('Error status:', error.status);
+            console.error('Error message:', error.message);
+            console.error('Error details:', error.error);
             this.messageService.add({
               severity: 'error',
               summary: 'Error',

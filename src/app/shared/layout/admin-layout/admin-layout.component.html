@@ -37,8 +37,12 @@
                 <div class="header-right">
                     <div class="user-info">
                         <i class="pi pi-user"></i>
-                        <span>Administrador</span>
+                        <span>{{userName}}</span>
                     </div>
+                    <button class="logout-btn" (click)="onLogout()">
+                        <i class="pi pi-sign-out"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
                 </div>
             </div>
         </header>
@@ -49,3 +53,5 @@
         </main>
     </div>
 </div>
+
+<p-toast></p-toast>

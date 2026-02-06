@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, CreateProductRequest, UpdateProductRequest } from '../models/product.models';
+import { environment } from '../../../env/enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly API_URL = 'http://localhost:8080';
+  private readonly API_URL = environment.API_URL;
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +28,7 @@ export class ProductService {
     return this.http.patch<Product>(`${this.API_URL}/productos/update`, product);
   }
 
-  deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/productos/${id}`);
+  deleteProduct(id: number): Observable<string> {
+    return this.http.delete(`${this.API_URL}/productos/${id}`, { responseType: 'text' });
   }
 }

@@ -1,7 +1,7 @@
 <div class="providers-container">
     <div class="providers-header">
         <h2>Gestión de Proveedores</h2>
-        <p-button label="Nuevo Proveedor" icon="pi pi-plus" routerLink="/providers/new"></p-button>
+        <button pButton label="Nuevo Proveedor" icon="pi pi-plus" routerLink="/providers/new"></button>
     </div>
 
     <p-toast></p-toast>
@@ -35,10 +35,10 @@
                     <td>{{provider.contacto}}</td>
                     <td>
                         <div class="action-buttons">
-                            <p-button icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info"
-                                [routerLink]="['/providers/edit', provider.id]" pTooltip="Editar"></p-button>
-                            <p-button icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                                (click)="deleteProvider(provider)" pTooltip="Eliminar"></p-button>
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-success"
+                                [routerLink]="['/providers/edit', provider.id]" pTooltip="Editar"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                                (click)="deleteProvider(provider)" pTooltip="Eliminar"></button>
                         </div>
                     </td>
                 </tr>

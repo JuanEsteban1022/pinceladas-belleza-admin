@@ -21,13 +21,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { BadgeModule } from 'primeng/badge';
 
-// Layout Components
-import { AdminLayoutComponent } from './shared/layout/admin-layout/admin-layout.component';
-
 @NgModule({
-  declarations: [
-    AdminLayoutComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule,
@@ -51,7 +46,6 @@ import { AdminLayoutComponent } from './shared/layout/admin-layout/admin-layout.
     BadgeModule
   ],
   exports: [
-    AdminLayoutComponent,
     CommonModule,
     RouterModule,
     FormsModule,

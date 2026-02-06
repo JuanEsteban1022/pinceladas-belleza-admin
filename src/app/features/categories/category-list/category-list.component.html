@@ -1,7 +1,7 @@
 <div class="categories-container">
     <div class="categories-header">
         <h2>Gestión de Categorías</h2>
-        <p-button label="Nueva Categoría" icon="pi pi-plus" routerLink="/categories/new"></p-button>
+        <button pButton label="Nueva Categoría" icon="pi pi-plus" routerLink="/categories/new"></button>
     </div>
 
     <p-toast></p-toast>
@@ -39,14 +39,14 @@
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <p-button icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info"
-                                [routerLink]="['/categories/edit', category.id]" pTooltip="Editar"></p-button>
-                            <p-button [icon]="category.estado ? 'pi pi-eye-slash' : 'pi pi-eye'"
-                                class="p-button-rounded p-button-text p-button-warning"
+                            <button pButton [icon]="category.estado ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                                class="p-button-rounded p-button-text p-button-info"
                                 (click)="toggleCategoryStatus(category)"
-                                [pTooltip]="category.estado ? 'Desactivar' : 'Activar'"></p-button>
-                            <p-button icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                                (click)="deleteCategory(category)" pTooltip="Eliminar"></p-button>
+                                [pTooltip]="category.estado ? 'Desactivar' : 'Activar'"></button>
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-success"
+                                [routerLink]="['/categories/edit', category.id]" pTooltip="Editar"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                                (click)="deleteCategory(category)" pTooltip="Eliminar"></button>
                         </div>
                     </td>
                 </tr>

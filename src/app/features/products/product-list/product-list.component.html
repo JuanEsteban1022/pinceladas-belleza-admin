@@ -3,24 +3,25 @@
         <div class="header-content">
             <div class="header-text">
                 <h2>Gestión de Productos</h2>
-                <p class="text-muted">Administra el inventario de productos de Pinceladas de Belleza</p>
+                <p class="text-muted mt-2 mb-2">Administra el inventario de productos de Pinceladas de Belleza</p>
             </div>
-            <div class="header-actions">
-                <p-button label="Nuevo Producto" icon="pi pi-plus" (click)="createProduct()"
-                    class="p-button-outlined"></p-button>
-                <p-button icon="pi pi-refresh" (click)="refreshData()" class="p-button-rounded"
-                    pTooltip="Actualizar datos"></p-button>
+            <div class="header-actions flex gap-2">
+                <button pButton label="Nuevo Producto" icon="pi pi-plus" (click)="createProduct()"
+                    class="p-button-outlined"></button>
+                <button pButton icon="pi pi-refresh" (click)="refreshData()" class="p-button-rounded"
+                    pTooltip="Actualizar datos"></button>
             </div>
         </div>
     </div>
 
     <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
 
     <p-card>
         <ng-template pTemplate="header">
             <div class="table-header">
-                <span>Lista de Productos</span>
-                <span class="p-input-icon-left">
+                <span class="m-3">Lista de Productos</span>
+                <span class="p-input-icon-left m-3">
                     <i class="pi pi-search"></i>
                     <input type="text" pInputText placeholder="Buscar producto..." [(ngModel)]="searchValue" />
                 </span>
@@ -64,19 +65,19 @@
                             [severity]="getStockSeverity(product.cantidadStock)"></p-tag>
                     </td>
                     <td>
-                        <p-tag [value]="getCategoryName(product.categoriaId)" severity="info"></p-tag>
+                        <p-tag [value]="getCategoryName(product.categoria.id)" severity="info"></p-tag>
                     </td>
                     <td>
-                        <p-tag [value]="getProviderName(product.proveedorId)" severity="secondary"></p-tag>
+                        <p-tag [value]="getProviderName(product.proveedor.id)" severity="secondary"></p-tag>
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <p-button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
-                                (click)="viewProduct(product)" pTooltip="Ver detalles"></p-button>
-                            <p-button icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info"
-                                (click)="editProduct(product)" pTooltip="Editar"></p-button>
-                            <p-button icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                                (click)="deleteProduct(product)" pTooltip="Eliminar"></p-button>
+                            <button pButton icon="pi pi-eye" class="p-button-rounded p-button-info"
+                                (click)="viewProduct(product)" pTooltip="Ver detalles"></button>
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success"
+                                (click)="editProduct(product)" pTooltip="Editar"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                (click)="deleteProduct(product)" pTooltip="Eliminar"></button>
                         </div>
                     </td>
                 </tr>
@@ -88,8 +89,8 @@
                         <div class="empty-message">
                             <i class="pi pi-inbox"></i>
                             <p>No hay productos registrados</p>
-                            <p-button label="Crear primer producto" icon="pi pi-plus" (click)="createProduct()"
-                                class="mt-3"></p-button>
+                            <button pButton label="Crear primer producto" icon="pi pi-plus" (click)="createProduct()"
+                                class="mt-3"></button>
                         </div>
                     </td>
                 </tr>

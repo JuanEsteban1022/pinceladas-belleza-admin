@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { CoreModule } from './core.module';
 import { SharedModule } from './shared.module';
 import { AuthModule } from './features/auth/auth.module';
@@ -11,13 +11,12 @@ import { ProvidersModule } from './features/providers/providers.module';
 import { CategoriesModule } from './features/categories/categories.module';
 import { ProductsModule } from './features/products/products.module';
 import { OrdersModule } from './features/orders/orders.module';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule,
@@ -26,9 +25,9 @@ import { OrdersModule } from './features/orders/orders.module';
     ProvidersModule,
     CategoriesModule,
     ProductsModule,
-    OrdersModule
+    OrdersModule,
+    ButtonModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: []
 })
 export class AppModule { }

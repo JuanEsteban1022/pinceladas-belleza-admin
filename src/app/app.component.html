@@ -1,1 +1,9 @@
-<app-admin-layout></app-admin-layout>
+<ng-container *ngIf="isAuthenticated() && !isAuthRoute(); else authLayout">
+    <div class="admin-layout-wrapper">
+        <app-admin-layout></app-admin-layout>
+    </div>
+</ng-container>
+
+<ng-template #authLayout>
+    <router-outlet></router-outlet>
+</ng-template>

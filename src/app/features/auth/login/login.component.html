@@ -1,1 +1,41 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Pinceladas de Belleza</h2>
+            <p>Panel de Administración</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="field">
+                <label for="username">Usuario</label>
+                <input id="username" type="text" pInputText formControlName="username"
+                    [ngClass]="{ 'p-invalid': submitted && f['username'].errors }" placeholder="Ingresa tu usuario" />
+                <small *ngIf="submitted && f['username'].errors" class="p-error">
+                    <span *ngIf="f['username'].errors['required']">El usuario es requerido</span>
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="password">Contraseña</label>
+                <input id="password" type="password" pInputText formControlName="password"
+                    [ngClass]="{ 'p-invalid': submitted && f['password'].errors }"
+                    placeholder="Ingresa tu contraseña" />
+                <small *ngIf="submitted && f['password'].errors" class="p-error">
+                    <span *ngIf="f['password'].errors['required']">La contraseña es requerida</span>
+                    <span *ngIf="f['password'].errors['minlength']">Mínimo 6 caracteres</span>
+                </small>
+            </div>
+
+            <button type="submit" pButton pRipple [label]="loading ? 'Iniciando sesión...' : 'Iniciar Sesión'"
+                [disabled]="loading" class="p-button-primary w-full">
+                <i *ngIf="loading" class="pi pi-spin pi-spinner mr-2"></i>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>&copy; 2026 Pinceladas de Belleza. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</div>
+
+<p-toast></p-toast>

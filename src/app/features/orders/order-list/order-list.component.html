@@ -2,8 +2,8 @@
     <div class="orders-header">
         <h2>Gestión de Pedidos</h2>
         <div class="header-actions">
-            <p-button label="Exportar" icon="pi pi-download" class="p-button-outlined"></p-button>
-            <p-button label="Actualizar" icon="pi pi-refresh" (click)="loadOrders()"></p-button>
+            <button pButton label="Exportar" icon="pi pi-download" class="p-button-outlined p-button-success"></button>
+            <button pButton label="Actualizar" icon="pi pi-refresh" (click)="loadOrders()"></button>
         </div>
     </div>
 
@@ -46,8 +46,8 @@
                     <td>{{formatDate(order.createdAt)}}</td>
                     <td>
                         <div class="action-buttons">
-                            <p-button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-info"
-                                (click)="viewOrderDetails(order)" pTooltip="Ver detalles"></p-button>
+                            <button pButton icon="pi pi-eye" class="p-button-rounded p-button-text p-button-info"
+                                (click)="viewOrderDetails(order)" pTooltip="Ver detalles"></button>
 
                             <p-splitButton icon="pi pi-cog" class="p-button-rounded p-button-text p-button-secondary"
                                 [model]="getStatusMenuItems(order)" pTooltip="Cambiar estado"></p-splitButton>
@@ -125,8 +125,8 @@
         </div>
 
         <ng-template pTemplate="footer">
-            <p-button label="Cerrar" icon="pi pi-times" (click)="displayOrderDialog = false"
-                class="p-button-outlined"></p-button>
+            <button pButton label="Cerrar" icon="pi pi-times" (click)="displayOrderDialog = false"
+                class="p-button-outlined"></button>
         </ng-template>
     </p-dialog>
 </div>

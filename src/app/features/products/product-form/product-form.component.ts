@@ -8,6 +8,7 @@ import { ProductService } from '../../../core/services/product.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { ProviderService } from '../../../core/services/provider.service';
 import { MessageService } from 'primeng/api';
+import { GoogleDriveService, GoogleDriveFile } from '../../../core/services/google-drive.service';
 
 @Component({
   selector: 'app-product-form',
@@ -22,6 +23,8 @@ export class ProductFormComponent implements OnInit {
 
   categories: Category[] = [];
   providers: Provider[] = [];
+  imagenesSeleccionadas: string[] = [];
+  loadingImages: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +33,8 @@ export class ProductFormComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private providerService: ProviderService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private googleDriveService: GoogleDriveService
   ) {
     this.productForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -39,7 +43,7 @@ export class ProductFormComponent implements OnInit {
       cantidadStock: [0, [Validators.required, Validators.min(0)]],
       categoriaId: [null, [Validators.required]],
       proveedorId: [null, [Validators.required]],
-      urlDrive: ['']
+      urlDrive: [''],
     });
   }
 
@@ -58,7 +62,7 @@ export class ProductFormComponent implements OnInit {
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data: Category[]) => {
-        this.categories = data.filter(cat => cat.estado); // Solo categorías activas
+        this.categories = data.filter(cat => cat.estado);
       },
       error: (error: any) => {
         console.error('Error loading categories:', error);
@@ -91,14 +95,24 @@ export class ProductFormComponent implements OnInit {
     this.loading = true;
     this.productService.getProductById(id).subscribe({
       next: (product: Product) => {
+        // Convertir URL de Google Drive a URL directa si existe
+        let urlDriveDirecta = '';
+        if (product.urlDrive) {
+          // Si hay URLs concatenadas, separarlas y convertirlas
+          const urls = product.urlDrive.split(',');
+          const convertedUrls = urls.map(url => this.googleDriveService.convertToDirectUrl(url.trim()));
+          this.imagenesSeleccionadas = convertedUrls;
+          urlDriveDirecta = product.urlDrive; // Mantener el formato original para el formulario
+        }
+
         this.productForm.patchValue({
           nombre: product.nombre,
           descripcion: product.descripcion,
           precio: product.precio,
           cantidadStock: product.cantidadStock,
-          categoriaId: product.categoriaId,
-          proveedorId: product.proveedorId,
-          urlDrive: product.urlDrive || ''
+          categoriaId: product.categoria?.id,
+          proveedorId: product.proveedor?.id,
+          urlDrive: urlDriveDirecta,
         });
         this.loading = false;
       },
@@ -180,7 +194,118 @@ export class ProductFormComponent implements OnInit {
   }
 
   onImageError(event: any): void {
-    event.target.src = 'assets/images/placeholder-product.png';
+    const originalSrc = event.target.src;
+
+    // Try to fix the URL if it's a Google Drive URL
+    if (originalSrc.includes('drive.google.com')) {
+      this.fixImageURL(originalSrc).then(fixedUrl => {
+        if (fixedUrl !== originalSrc) {
+          event.target.src = fixedUrl;
+        } else {
+          event.target.src = 'assets/images/img_no_found.png';
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Advertencia',
+            detail: 'La imagen no pudo cargarse. Verifica que el archivo sea público en Google Drive.'
+          });
+        }
+      });
+    } else {
+      event.target.src = 'assets/images/img_no_found.png';
+    }
+  }
+
+  private async fixImageURL(url: string): Promise<string> {
+    try {
+      const workingUrl = await this.googleDriveService.getWorkingImageUrl(url);
+      return workingUrl;
+    } catch {
+      return url;
+    }
+  }
+
+  async validateImages(): Promise<void> {
+    if (this.imagenesSeleccionadas.length === 0) return;
+    const validImages: string[] = [];
+
+    for (const imageUrl of this.imagenesSeleccionadas) {
+      const isValid = await this.googleDriveService.testImageUrl(imageUrl);
+      if (isValid) {
+        validImages.push(imageUrl);
+      } else {
+        console.warn('Imagen inválida:', imageUrl);
+      }
+    }
+
+    if (validImages.length !== this.imagenesSeleccionadas.length) {
+      this.imagenesSeleccionadas = validImages;
+      // Actualizar urlDrive con todas las URLs válidas concatenadas
+      const allUrlsString = validImages.join(',');
+      this.productForm.patchValue({ urlDrive: allUrlsString });
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Información',
+        detail: `Se eliminaron ${this.imagenesSeleccionadas.length - validImages.length} imágenes que no pudieron cargarse`
+      });
+    }
+  }
+
+  async abrirSelectorGoogleDrive(): Promise<void> {
+    this.loadingImages = true;
+
+    this.googleDriveService.selectMultipleImages().subscribe({
+      next: async (files: GoogleDriveFile[]) => {
+        const urlsDirectas: string[] = [];
+
+        for (const file of files) {
+          try {
+            const workingUrl = await this.googleDriveService.getWorkingImageUrl(file.url);
+            urlsDirectas.push(workingUrl);
+          } catch (error) {
+            console.error(`Error procesando archivo ${file.name}:`, error);
+            // Aún así agregamos la URL convertida básica
+            const fallbackUrl = this.googleDriveService.convertToDirectUrl(file.url);
+            urlsDirectas.push(fallbackUrl);
+          }
+        }
+
+        this.imagenesSeleccionadas = [...this.imagenesSeleccionadas, ...urlsDirectas];
+        // Concatenar todas las URLs en un solo string separado por comas
+        const allUrlsString = this.imagenesSeleccionadas.join(',');
+        this.productForm.patchValue({ urlDrive: allUrlsString });
+        this.loadingImages = false;
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: `Se seleccionaron ${files.length} imágenes`
+        });
+      },
+      error: (error) => {
+        console.error('Error al seleccionar imágenes:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron seleccionar las imágenes de Google Drive'
+        });
+        this.loadingImages = false;
+      }
+    });
+  }
+
+  eliminarImagen(index: number): void {
+    this.imagenesSeleccionadas.splice(index, 1);
+    // Actualizar urlDrive con todas las URLs restantes concatenadas
+    const allUrlsString = this.imagenesSeleccionadas.join(',');
+    this.productForm.patchValue({ urlDrive: allUrlsString });
+  }
+
+  onUrlDriveChange(): void {
+    const urlDriveValue = this.urlDrive?.value;
+    if (urlDriveValue && urlDriveValue.includes('drive.google.com')) {
+      const directUrl = this.googleDriveService.convertToDirectUrl(urlDriveValue);
+      this.urlDrive?.setValue(directUrl);
+    }
   }
 
   // Getters para validaciones en el template
