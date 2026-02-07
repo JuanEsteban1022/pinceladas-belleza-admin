@@ -119,12 +119,14 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  getCategoryName(categoryId: number): string {
+  getCategoryName(categoryId?: number): string {
+    if (!categoryId) return 'N/A';
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.nombreCategoria : 'N/A';
   }
 
-  getProviderName(providerId: number): string {
+  getProviderName(providerId?: number): string {
+    if (!providerId) return 'N/A';
     const provider = this.providers.find(p => p.id === providerId);
     return provider ? provider.nombre : 'N/A';
   }
