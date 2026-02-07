@@ -80,11 +80,11 @@
                     <label>Imágenes de Google Drive</label>
                     <div class="drive-images-section">
                         <div class="button-group">
-                            <button pButton label="Seleccionar Imágenes de Drive" icon="pi pi-google"
+                            <button pButton type="button" label="Seleccionar Imágenes de Drive" icon="pi pi-google"
                                 class="p-button-outlined" (click)="abrirSelectorGoogleDrive()"
                                 [loading]="loadingImages">
                             </button>
-                            <button pButton label="Validar Imágenes" icon="pi pi-check"
+                            <button pButton type="button" label="Validar Imágenes" icon="pi pi-check"
                                 class="p-button-outlined p-button-help" (click)="validateImages()"
                                 *ngIf="imagenesSeleccionadas.length > 0">
                             </button>
