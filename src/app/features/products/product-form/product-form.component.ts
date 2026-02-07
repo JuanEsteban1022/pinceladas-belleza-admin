@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product, CreateProductRequest, UpdateProductRequest } from '../../../core/models/product.models';
@@ -9,13 +9,14 @@ import { CategoryService } from '../../../core/services/category.service';
 import { ProviderService } from '../../../core/services/provider.service';
 import { MessageService } from 'primeng/api';
 import { GoogleDriveService, GoogleDriveFile } from '../../../core/services/google-drive.service';
+import Quill from 'quill';
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss']
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, AfterViewInit {
   productForm: FormGroup;
   isEdit: boolean = false;
   loading: boolean = false;
@@ -26,6 +27,8 @@ export class ProductFormComponent implements OnInit {
   imagenesSeleccionadas: string[] = [];
   loadingImages: boolean = false;
 
+  @ViewChild('descripcion') editorElement!: ElementRef;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -34,7 +37,8 @@ export class ProductFormComponent implements OnInit {
     private categoryService: CategoryService,
     private providerService: ProviderService,
     private messageService: MessageService,
-    private googleDriveService: GoogleDriveService
+    private googleDriveService: GoogleDriveService,
+    private cdr: ChangeDetectorRef
   ) {
     this.productForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -56,6 +60,28 @@ export class ProductFormComponent implements OnInit {
       this.isEdit = true;
       this.productId = +id;
       this.loadProduct(this.productId);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Forzar la actualización del editor cuando se carga un producto existente
+    if (this.isEdit && this.productId) {
+      setTimeout(() => {
+        const descripcionControl = this.productForm.get('descripcion');
+        if (descripcionControl && descripcionControl.value) {
+          // Forzar la detección de cambios para que el editor muestre el contenido
+          descripcionControl.setValue(descripcionControl.value);
+          this.cdr.detectChanges();
+
+          // Método alternativo para PrimeNG 15 con Quill 2.x
+          setTimeout(() => {
+            const editorElement = document.querySelector('#descripcion .ql-editor');
+            if (editorElement && descripcionControl.value) {
+              editorElement.innerHTML = descripcionControl.value;
+            }
+          }, 100);
+        }
+      }, 100);
     }
   }
 
@@ -114,6 +140,24 @@ export class ProductFormComponent implements OnInit {
           proveedorId: product.proveedor?.id,
           urlDrive: urlDriveDirecta,
         });
+
+        // Forzar la actualización del editor después de un pequeño retraso
+        setTimeout(() => {
+          const descripcionControl = this.productForm.get('descripcion');
+          if (descripcionControl && product.descripcion) {
+            descripcionControl.setValue(product.descripcion);
+            this.cdr.detectChanges(); // Forzar detección de cambios
+
+            // Método alternativo para PrimeNG 15 con Quill 2.x
+            setTimeout(() => {
+              const editorElement = document.querySelector('#descripcion .ql-editor');
+              if (editorElement && product.descripcion) {
+                editorElement.innerHTML = product.descripcion;
+              }
+            }, 100);
+          }
+        }, 200);
+
         this.loading = false;
       },
       error: (error: any) => {

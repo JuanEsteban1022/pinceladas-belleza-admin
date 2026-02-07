@@ -1,0 +1,41 @@
+<div class="category-form-container">
+    <div class="form-header">
+        <h2>{{isEdit ? 'Editar Subcategoría' : 'Nueva Subcategoría'}}</h2>
+        <button pButton label="Volver" icon="pi pi-arrow-left" class="p-button-outlined" (click)="cancel()"></button>
+    </div>
+
+    <p-toast></p-toast>
+
+    <p-card>
+        <form [formGroup]="subcategoryForm" (ngSubmit)="saveSubcategory()">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="nombreSubcategoria">Nombre de la Subcategoría *</label>
+                    <input id="nombreSubcategoria" type="text" pInputText formControlName="nombreSubcategoria"
+                        placeholder="Ingrese el nombre de la subcategoría" />
+                    <small class="p-error"
+                        *ngIf="subcategoryForm.get('nombreSubcategoria')?.invalid && subcategoryForm.get('nombreSubcategoria')?.touched">
+                        El nombre es requerido y debe tener al menos 3 caracteres
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label for="estado">Estado *</label>
+                    <p-toggleButton formControlName="estado" onLabel="Activo" offLabel="Inactivo" onIcon="pi pi-check"
+                        offIcon="pi pi-times"></p-toggleButton>
+                    <small class="p-error"
+                        *ngIf="subcategoryForm.get('estado')?.invalid && subcategoryForm.get('estado')?.touched">
+                        El estado es requerido
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button pButton label="Guardar" icon="pi pi-save" type="submit"
+                    [disabled]="subcategoryForm.invalid || loading"></button>
+                <button pButton label="Cancelar" icon="pi pi-times" class="p-button-outlined"
+                    (click)="cancel()"></button>
+            </div>
+        </form>
+    </p-card>
+</div>

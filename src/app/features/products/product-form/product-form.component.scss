@@ -1,352 +1,901 @@
 .product-form-container {
+
     padding: 2rem;
+
     background: linear-gradient(135deg, #fdf6f6 0%, #f9e8e8 100%);
+
     min-height: 100vh;
 
+
+
     .form-header {
+
         margin-bottom: 2rem;
+
+
 
         .header-content {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             background: white;
+
             padding: 2rem;
+
             border-radius: 16px;
+
             box-shadow: 0 8px 32px rgba(212, 165, 165, 0.15);
 
+
+
             .header-text {
+
                 h2 {
+
                     color: #3a2a24;
+
                     margin: 0 0 0.5rem 0;
+
                     font-size: 2rem;
+
                     font-weight: 700;
+
                     background: linear-gradient(135deg, #3a2a24 0%, #3a2a24 100%);
+
                     -webkit-background-clip: text;
+
                     -webkit-text-fill-color: transparent;
+
                     background-clip: text;
+
                 }
+
+
 
                 .text-muted {
+
                     color: #a67c7c;
+
                     margin: 0;
+
                     font-size: 1.1rem;
+
                 }
+
             }
+
+
 
             .header-actions {
+
                 display: flex;
+
                 gap: 1rem;
+
             }
+
         }
+
     }
+
+
 
     .form-grid {
+
         display: grid;
+
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
         gap: 1.5rem;
+
         margin-bottom: 2rem;
 
+
+
         .form-field {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 0.5rem;
 
+
+
             &.full-width {
+
                 grid-column: 1 / -1;
+
             }
+
+
 
             label {
+
                 font-weight: 600;
+
                 color: #3a2a24;
+
                 font-size: 0.95rem;
+
             }
+
+
 
             input[pInputText],
+
             p-inputNumber,
+
             p-dropdown,
+
             textarea[pInputTextarea] {
+
                 width: 100%;
+
             }
+
+
 
             .p-error {
+
                 color: #e74c3c;
+
                 font-size: 0.85rem;
+
                 margin-top: 0.25rem;
+
             }
+
+
 
             .form-help {
+
                 color: #a67c7c;
+
                 font-size: 0.85rem;
+
                 font-style: italic;
+
             }
+
+
 
             .image-preview {
+
                 margin-top: 1rem;
+
                 border-radius: 12px;
+
                 overflow: hidden;
+
                 box-shadow: 0 4px 16px rgba(212, 165, 165, 0.2);
+
                 max-width: 400px;
 
+
+
                 img {
+
                     width: 100%;
+
                     height: auto;
+
                     display: block;
+
                     border-radius: 12px;
+
                 }
+
             }
+
+
 
             .drive-images-section {
+
                 display: flex;
+
                 flex-direction: column;
+
                 gap: 0.75rem;
 
+
+
                 .button-group {
+
                     display: flex;
+
                     gap: 0.75rem;
+
                     flex-wrap: wrap;
 
+
+
                     .p-button {
+
                         align-self: flex-start;
+
                         max-width: 300px;
+
                     }
+
                 }
+
+
 
                 .p-button {
+
                     align-self: flex-start;
+
                     max-width: 300px;
+
                 }
+
             }
+
+
 
             .images-gallery {
+
                 display: grid;
+
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
                 gap: 1rem;
+
                 margin-top: 1rem;
 
+
+
                 .image-item {
+
                     position: relative;
+
                     border-radius: 12px;
+
                     overflow: hidden;
+
                     box-shadow: 0 4px 16px rgba(212, 165, 165, 0.2);
+
                     aspect-ratio: 1;
 
+
+
                     img {
+
                         width: 100%;
+
                         height: 100%;
+
                         object-fit: cover;
+
                         display: block;
+
                         transition: transform 0.3s ease;
+
                     }
+
+
 
                     .image-overlay {
+
                         position: absolute;
+
                         top: 0;
+
                         right: 0;
+
                         padding: 0.5rem;
+
                         opacity: 0;
+
                         transition: opacity 0.3s ease;
+
                     }
+
+
 
                     &:hover {
+
                         img {
+
                             transform: scale(1.05);
+
                         }
+
+
 
                         .image-overlay {
+
                             opacity: 1;
+
                         }
+
                     }
+
                 }
+
             }
+
         }
+
     }
+
+
 
     .form-actions {
+
         display: flex;
+
         gap: 1rem;
+
         justify-content: flex-end;
+
         padding-top: 2rem;
+
         border-top: 1px solid #f4e8e8;
+
     }
+
 }
+
+
 
 // PrimeNG Component Overrides
+
 :host ::ng-deep {
+
     .p-card {
+
         border: none;
+
         border-radius: 16px;
+
         box-shadow: 0 8px 32px rgba(212, 165, 165, 0.15);
+
         overflow: hidden;
 
+
+
         .p-card-content {
+
             padding: 2rem;
+
         }
+
     }
+
+
 
     .p-inputtext {
+
         border-radius: 8px;
+
         border: 2px solid #f4e8e8;
+
         padding: 0.75rem 1rem;
+
         font-size: 1rem;
+
         transition: all 0.3s ease;
 
+
+
         &:focus {
+
             border-color: #3a2a24;
+
             box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+
         }
 
+
+
         &.ng-invalid.ng-touched {
+
             border-color: #e74c3c;
+
         }
+
     }
+
+
 
     .p-inputtextarea {
+
         border-radius: 8px;
+
         border: 2px solid #f4e8e8;
+
         padding: 0.75rem 1rem;
+
         font-size: 1rem;
+
         transition: all 0.3s ease;
+
         resize: vertical;
 
+
+
         &:focus {
+
             border-color: #3a2a24;
+
             box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+
         }
 
+
+
         &.ng-invalid.ng-touched {
+
             border-color: #e74c3c;
+
         }
+
     }
+
+
 
     .p-inputnumber {
+
         width: 100%;
 
+
+
         .p-inputnumber-input {
+
             border-radius: 8px;
+
             border: 2px solid #f4e8e8;
+
             padding: 0.75rem 1rem;
+
             font-size: 1rem;
+
             transition: all 0.3s ease;
+
             width: 100%;
 
+
+
             &:focus {
+
                 border-color: #3a2a24;
+
                 box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+
             }
+
+
 
             &.ng-invalid.ng-touched {
+
                 border-color: #e74c3c;
+
             }
+
         }
+
     }
+
+
 
     .p-dropdown {
+
         border-radius: 8px;
+
         border: 2px solid #f4e8e8;
+
         transition: all 0.3s ease;
+
+
 
         &:not(.p-disabled):hover {
+
             border-color: #3a2a24;
+
         }
+
+
 
         &.p-focus {
+
             border-color: #3a2a24;
+
             box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+
         }
+
+
 
         &.ng-invalid.ng-touched {
+
             border-color: #e74c3c;
+
         }
+
+
 
         .p-dropdown-label {
+
             padding: 0.75rem 1rem;
+
         }
+
+
 
         .p-dropdown-trigger {
+
             width: 3rem;
+
         }
+
     }
+
+
 
     .p-button {
+
         border-radius: 8px;
+
         font-weight: 600;
+
         padding: 0.75rem 1.5rem;
+
         transition: all 0.3s ease;
 
+
+
         &.p-button-outlined {
+
             border-color: #3a2a24;
+
             color: #3a2a24;
 
+
+
             &:hover {
+
                 background: #3a2a24;
+
                 color: white;
+
             }
+
         }
+
+
 
         &:disabled {
+
             opacity: 0.6;
+
             cursor: not-allowed;
+
         }
+
     }
+
+
+
+    .p-editor {
+
+        border-radius: 8px;
+
+        border: 2px solid #f4e8e8;
+
+        overflow: hidden;
+
+        transition: all 0.3s ease;
+
+
+
+        &:focus-within {
+
+            border-color: #3a2a24;
+
+            box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+
+        }
+
+
+
+        &.ng-invalid.ng-touched {
+
+            border-color: #e74c3c;
+
+        }
+
+
+
+        .p-editor-toolbar {
+
+            background: #fafafa;
+
+            border-bottom: 1px solid #f4e8e8;
+
+            padding: 0.5rem;
+
+
+
+            .ql-formats {
+
+                display: flex;
+
+                align-items: center;
+
+                gap: 0.25rem;
+
+                margin-right: 0.5rem;
+
+
+
+                button {
+
+                    width: 2rem;
+
+                    height: 2rem;
+
+                    border-radius: 4px;
+
+                    border: 1px solid transparent;
+
+                    background: transparent;
+
+                    color: #3a2a24;
+
+                    font-weight: 600;
+
+                    transition: all 0.2s ease;
+
+
+
+                    &:hover {
+
+                        background: #f4e8e8;
+
+                        border-color: #3a2a24;
+
+                    }
+
+
+
+                    &.ql-active {
+
+                        background: #3a2a24;
+
+                        color: white;
+
+                    }
+
+                }
+
+
+
+                .ql-separator {
+
+                    width: 1px;
+
+                    height: 1.5rem;
+
+                    background: #e0e0e0;
+
+                    margin: 0 0.5rem;
+
+                }
+
+            }
+
+        }
+
+
+
+        .p-editor-content {
+
+            .ql-editor {
+
+                min-height: 120px;
+
+                font-size: 1rem;
+
+                line-height: 1.5;
+
+                color: #3a2a24;
+
+                padding: 1rem;
+
+
+
+                &:focus {
+
+                    outline: none;
+
+                }
+
+
+
+                p {
+
+                    margin: 0 0 0.5rem 0;
+
+
+
+                    &:last-child {
+
+                        margin-bottom: 0;
+
+                    }
+
+                }
+
+
+
+                ul,
+
+                ol {
+
+                    margin: 0.5rem 0;
+
+                    padding-left: 1.5rem;
+
+                }
+
+
+
+                a {
+
+                    color: #3a2a24;
+
+                    text-decoration: underline;
+
+
+
+                    &:hover {
+
+                        color: #6b4c3c;
+
+                    }
+
+                }
+
+            }
+
+
+
+            .ql-blank::before {
+
+                color: #a67c7c;
+
+                font-style: italic;
+
+            }
+
+        }
+
+    }
+
 }
+
+
 
 // Responsive Design
+
 @media (max-width: 768px) {
+
     .product-form-container {
+
         padding: 1rem;
 
+
+
         .form-header {
+
             .header-content {
+
                 flex-direction: column;
+
                 gap: 1rem;
+
                 text-align: center;
 
+
+
                 .header-text {
+
                     h2 {
+
                         font-size: 1.5rem;
+
                     }
+
                 }
+
             }
+
         }
+
+
 
         .form-grid {
+
             grid-template-columns: 1fr;
+
             gap: 1rem;
 
+
+
             .form-field {
+
                 &.full-width {
+
                     grid-column: 1;
+
                 }
+
             }
+
         }
+
+
 
         .form-actions {
+
             flex-direction: column;
+
             gap: 0.75rem;
 
+
+
             .p-button {
+
                 width: 100%;
+
             }
+
         }
+
     }
+
 }
 
+
+
 // Loading State
+
 .p-card[loading] {
+
     position: relative;
 
+
+
     &::before {
+
         content: '';
+
         position: absolute;
+
         top: 0;
+
         left: 0;
+
         right: 0;
+
         bottom: 0;
+
         background: rgba(255, 255, 255, 0.8);
+
         z-index: 1;
+
         display: flex;
+
         align-items: center;
+
         justify-content: center;
+
     }
+
 }

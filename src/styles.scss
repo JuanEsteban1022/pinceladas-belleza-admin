@@ -11,6 +11,10 @@ body {
     color: #333;
 }
 
+/* Importar estilos de Quill para el editor de texto rico */
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.snow.css';
+
 /* Variables de colores */
 :root {
     --primary-color: #3a2a24;

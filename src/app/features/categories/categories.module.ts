@@ -6,12 +6,16 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryFormComponent } from './category-form/category-form.component';
 import { CategoriesRoutingModule } from './categories-routing.module';
 import { SharedModule } from '../../shared.module';
+import { SubcategoriesListComponent } from './subcategories-list/subcategories-list.component';
+import { SubcategoriesFormComponent } from './subcategories-form/subcategories-form.component';
 
 @NgModule({
   declarations: [
     CategoryListComponent,
     CategoryFormComponent,
-    CategoryDetailComponent
+    CategoryDetailComponent,
+    SubcategoriesListComponent,
+    SubcategoriesFormComponent
   ],
   imports: [
     CommonModule,

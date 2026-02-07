@@ -98,9 +98,8 @@
 
                 <div class="form-field full-width">
                     <label for="descripcion">Descripción *</label>
-                    <textarea id="descripcion" pInputTextarea formControlName="descripcion" rows="4"
-                        placeholder="Describe el producto detalladamente..." [autoResize]="true">
-                    </textarea>
+                    <p-editor id="descripcion" formControlName="descripcion" [style]="{ height: '200px' }">
+                    </p-editor>
                     <small class="p-error" *ngIf="descripcion?.invalid && descripcion?.touched">
                         La descripción es requerida y debe tener al menos 10 caracteres
                     </small>

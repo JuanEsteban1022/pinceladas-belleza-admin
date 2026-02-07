@@ -20,6 +20,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { BadgeModule } from 'primeng/badge';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
   declarations: [],
@@ -43,7 +44,8 @@ import { BadgeModule } from 'primeng/badge';
     ToggleButtonModule,
     ConfirmDialogModule,
     SkeletonModule,
-    BadgeModule
+    BadgeModule,
+    EditorModule
   ],
   exports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { BadgeModule } from 'primeng/badge';
     ToggleButtonModule,
     ConfirmDialogModule,
     SkeletonModule,
-    BadgeModule
+    BadgeModule,
+    EditorModule
   ]
 })
 export class SharedModule { }

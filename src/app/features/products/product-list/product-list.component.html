@@ -54,8 +54,8 @@
                         </div>
                     </td>
                     <td>
-                        <div class="product-description">
-                            {{product.descripcion | slice:0:80}}{{product.descripcion.length > 80 ? '...' : ''}}
+                        <div class="product-description"
+                            [innerHTML]="(product.descripcion | slice:0:80) + (product.descripcion.length > 80 ? '...' : '')">
                         </div>
                     </td>
                     <td>
