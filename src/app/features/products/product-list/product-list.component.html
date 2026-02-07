@@ -28,9 +28,10 @@
             </div>
         </ng-template>
 
-        <p-table [value]="products" [loading]="loading" [paginator]="true" [rows]="10"
-            [globalFilterFields]="['nombre', 'descripcion']" filterDisplay="menu" [scrollable]="true"
-            scrollHeight="400px">
+        <p-table [value]="products" [loading]="loading" [paginator]="true" [rows]="5"
+            [rowsPerPageOptions]="[5,10,20,50]" [globalFilterFields]="['nombre', 'descripcion']" filterDisplay="menu"
+            [scrollable]="false" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="min-width: 80px">ID</th>
