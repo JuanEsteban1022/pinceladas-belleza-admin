@@ -1,7 +1,7 @@
 export interface Category {
   id: number;
   nombreCategoria: string;
-  estado: boolean;
+  estado: number | boolean;
 }
 
 export interface CreateCategoryRequest {

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { ProductService } from './product.service';
-import { CategoryService } from './category.service';
-import { ProviderService } from './provider.service';
-import { MockDataService } from './mock-data.service';
-import { environment } from '../../../env/enviroment';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, forkJoin, of } from "rxjs";
+import { map, catchError } from "rxjs/operators";
+import { ProductService } from "./product.service";
+import { CategoryService } from "./category.service";
+import { ProviderService } from "./provider.service";
+import { MockDataService } from "./mock-data.service";
+import { environment } from "../../../env/enviroment";
 
 export interface DashboardStats {
   totalProducts: number;
@@ -39,37 +39,37 @@ export interface TopProduct {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DashboardService {
-  private readonly API_URL = environment.API_URL;;
+  private readonly API_URL = environment.API_URL;
 
   constructor(
     private http: HttpClient,
     private productService: ProductService,
     private categoryService: CategoryService,
     private providerService: ProviderService,
-    private mockDataService: MockDataService
-  ) { }
+    private mockDataService: MockDataService,
+  ) {}
 
   getDashboardStats(): Observable<DashboardStats> {
     // Get real data from existing services
     const products$ = this.productService.getAllProducts();
     const categories$ = this.categoryService.getAllCategories();
     const providers$ = this.providerService.getAllProviders();
-    const orders$ = this.http.get<any[]>(`${this.API_URL}/pedidos`).pipe(
-      catchError(() => this.mockDataService.getMockOrders())
-    );
-    const monthlySales$ = this.http.get<any[]>(`${this.API_URL}/ventas/mensuales`).pipe(
-      catchError(() => this.mockDataService.getMockMonthlySales())
-    );
+    const orders$ = this.http
+      .get<any[]>(`${this.API_URL}/pedidos`)
+      .pipe(catchError(() => this.mockDataService.getMockOrders()));
+    const monthlySales$ = this.http
+      .get<any[]>(`${this.API_URL}/ventas/mensuales`)
+      .pipe(catchError(() => this.mockDataService.getMockMonthlySales()));
 
     return forkJoin({
       products: products$,
       categories: categories$,
       providers: providers$,
       orders: orders$,
-      monthlySales: monthlySales$
+      monthlySales: monthlySales$,
     }).pipe(
       map(({ products, categories, providers, orders, monthlySales }) => {
         return {
@@ -84,13 +84,13 @@ export class DashboardService {
           lowStockProducts: this.getLowStockProducts(products),
           productGrowth: this.calculateGrowth(products.length, 12),
           categoryGrowth: this.calculateGrowth(categories.length, 2),
-          providerGrowth: this.calculateGrowth(providers.length, 0)
+          providerGrowth: this.calculateGrowth(providers.length, 0),
         };
       }),
-      catchError(error => {
-        console.error('Error loading dashboard data:', error);
+      catchError((error) => {
+        console.error("Error loading dashboard data:", error);
         return of(this.getDefaultStats());
-      })
+      }),
     );
   }
 
@@ -100,14 +100,18 @@ export class DashboardService {
 
   private getRecentOrders(orders: any[]): Order[] {
     return orders
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
       .slice(0, 5)
-      .map(order => ({
+      .map((order) => ({
         id: order.id || `ORD-${order.id}`,
-        customer: order.customer || order.cliente || 'Cliente',
+        customer: order.customer || order.cliente || "Cliente",
         total: order.total || 0,
-        status: order.status || 'Pendiente',
-        createdAt: order.createdAt || order.fechaCreacion || new Date().toISOString()
+        status: order.status || "Pendiente",
+        createdAt:
+          order.createdAt || order.fechaCreacion || new Date().toISOString(),
       }));
   }
 
@@ -120,17 +124,22 @@ export class DashboardService {
         name: product.nombre,
         sales: Math.floor(Math.random() * 50) + 10,
         revenue: (product.precio || 0) * (Math.floor(Math.random() * 50) + 10),
-        category: product.categoria?.nombre || 'Sin categoría'
+        category:
+          product.categoria?.nombreCategoria ||
+          product.categoria?.nombre ||
+          "Sin categoría",
       }))
       .sort((a, b) => b.sales - a.sales);
   }
 
-  private getLowStockProducts(products: any[]): { name: string; stock: number }[] {
+  private getLowStockProducts(
+    products: any[],
+  ): { name: string; stock: number }[] {
     return products
-      .filter(product => (product.cantidadStock || 0) <= 12)
-      .map(product => ({
+      .filter((product) => (product.cantidadStock || 0) <= 12)
+      .map((product) => ({
         name: product.nombre,
-        stock: product.cantidadStock || 0
+        stock: product.cantidadStock || 0,
       }))
       .sort((a, b) => a.stock - b.stock)
       .slice(0, 10);
@@ -143,12 +152,12 @@ export class DashboardService {
 
   private getDefaultMonthlySales(): { month: string; sales: number }[] {
     return [
-      { month: 'Enero', sales: 2800000 },
-      { month: 'Febrero', sales: 3200000 },
-      { month: 'Marzo', sales: 2900000 },
-      { month: 'Abril', sales: 3500000 },
-      { month: 'Mayo', sales: 3100000 },
-      { month: 'Junio', sales: 3800000 }
+      { month: "Enero", sales: 2800000 },
+      { month: "Febrero", sales: 3200000 },
+      { month: "Marzo", sales: 2900000 },
+      { month: "Abril", sales: 3500000 },
+      { month: "Mayo", sales: 3100000 },
+      { month: "Junio", sales: 3800000 },
     ];
   }
 
@@ -165,7 +174,7 @@ export class DashboardService {
       lowStockProducts: [],
       productGrowth: 0,
       categoryGrowth: 0,
-      providerGrowth: 0
+      providerGrowth: 0,
     };
   }
 }

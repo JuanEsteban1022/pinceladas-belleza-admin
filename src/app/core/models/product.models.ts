@@ -1,5 +1,5 @@
-import { Category } from './category.models';
-import { Provider } from './provider.models';
+import { Category } from "./category.models";
+import { Provider } from "./provider.models";
 
 export interface Product {
   id: number;
@@ -7,8 +7,8 @@ export interface Product {
   descripcion: string;
   precio: number;
   cantidadStock: number;
-  categoriaId: number;
-  proveedorId: number;
+  categoriaId?: number;
+  proveedorId?: number;
   urlDrive?: string;
   categoria?: Category;
   proveedor?: Provider;

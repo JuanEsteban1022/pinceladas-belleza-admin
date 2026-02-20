@@ -12,7 +12,7 @@ export interface RegisterRequest {
 
 export interface AuthResponse {
   token: string;
-  usuario: {
+  usuario?: {
     id: number;
     username: string;
     email: string;
