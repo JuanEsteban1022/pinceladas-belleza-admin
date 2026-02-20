@@ -66,10 +66,10 @@
                             [severity]="getStockSeverity(product.cantidadStock)"></p-tag>
                     </td>
                     <td>
-                        <p-tag [value]="getCategoryName(product.categoria?.id)" severity="info"></p-tag>
+                        <p-tag [value]="getCategoryName(product.categoriaId)" severity="info"></p-tag>
                     </td>
                     <td>
-                        <p-tag [value]="getProviderName(product.proveedor?.id)" severity="secondary"></p-tag>
+                        <p-tag [value]="getProviderName(product.proveedorId)" severity="secondary"></p-tag>
                     </td>
                     <td>
                         <div class="action-buttons">
