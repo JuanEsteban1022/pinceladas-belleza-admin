@@ -76,13 +76,17 @@
                     </small>
                 </div>-->
 
+
                 <div class="form-field">
-                    <label>Imágenes de Google Drive</label>
-                    <div class="drive-images-section">
+                    <label>Imágenes de Cloudinary</label>
+                    <div class="cloudinary-images-section">
                         <div class="button-group">
-                            <button pButton type="button" label="Seleccionar Imágenes de Drive" icon="pi pi-google"
-                                class="p-button-outlined" (click)="abrirSelectorGoogleDrive()"
+                            <button pButton type="button" label="Ver Imágenes Existentes" icon="pi pi-images"
+                                class="p-button-outlined p-button-info" (click)="verImagenesExistentes()"
                                 [loading]="loadingImages">
+                            </button>
+                            <button pButton type="button" label="Subir Nuevas Imágenes" icon="pi pi-cloud-upload"
+                                class="p-button-outlined" (click)="abrirSelectorCloudinary()" [loading]="loadingImages">
                             </button>
                             <button pButton type="button" label="Validar Imágenes" icon="pi pi-check"
                                 class="p-button-outlined p-button-help" (click)="validateImages()"
@@ -90,8 +94,10 @@
                             </button>
                         </div>
                         <small class="form-help">
-                            Selecciona múltiples imágenes desde tu Google Drive. Las imágenes deben ser públicas para
-                            poder visualizarse.
+                            <strong>Ver Imágenes Existentes:</strong> Muestra las imágenes ya subidas a tu carpeta de
+                            Cloudinary.<br>
+                            <strong>Subir Nuevas Imágenes:</strong> Abre el widget para subir desde tu computadora o
+                            redes sociales.
                         </small>
                     </div>
                 </div>

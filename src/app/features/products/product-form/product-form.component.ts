@@ -20,9 +20,9 @@ import { CategoryService } from "../../../core/services/category.service";
 import { ProviderService } from "../../../core/services/provider.service";
 import { MessageService } from "primeng/api";
 import {
-  GoogleDriveService,
-  GoogleDriveFile,
-} from "../../../core/services/google-drive.service";
+  CloudinaryService,
+  CloudinaryImage,
+} from "../../../core/services/cloudinary.service";
 import Quill from "quill";
 
 @Component({
@@ -51,7 +51,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     private categoryService: CategoryService,
     private providerService: ProviderService,
     private messageService: MessageService,
-    private googleDriveService: GoogleDriveService,
+    private cloudinaryService: CloudinaryService,
     private cdr: ChangeDetectorRef,
   ) {
     this.productForm = this.fb.group({
@@ -137,13 +137,13 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.productService.getProductById(id).subscribe({
       next: (product: Product) => {
-        // Convertir URL de Google Drive a URL directa si existe
+        // Convertir URL de Cloudinary a URL segura si existe
         let urlDriveDirecta = "";
         if (product.urlDrive) {
           // Si hay URLs concatenadas, separarlas y convertirlas
           const urls = product.urlDrive.split(",");
           const convertedUrls = urls.map((url) =>
-            this.googleDriveService.convertToDirectUrl(url.trim()),
+            this.cloudinaryService.convertToSecureUrl(url.trim()),
           );
           this.imagenesSeleccionadas = convertedUrls;
           urlDriveDirecta = product.urlDrive; // Mantener el formato original para el formulario
@@ -282,7 +282,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
 
   private async fixImageURL(url: string): Promise<string> {
     try {
-      const workingUrl = await this.googleDriveService.getWorkingImageUrl(url);
+      const workingUrl = await this.cloudinaryService.convertToSecureUrl(url);
       return workingUrl;
     } catch {
       return url;
@@ -294,7 +294,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     const validImages: string[] = [];
 
     for (const imageUrl of this.imagenesSeleccionadas) {
-      const isValid = await this.googleDriveService.testImageUrl(imageUrl);
+      const isValid = await this.cloudinaryService.testImageUrl(imageUrl);
       if (isValid) {
         validImages.push(imageUrl);
       } else {
@@ -315,32 +315,84 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async abrirSelectorGoogleDrive(): Promise<void> {
+  async verImagenesExistentes(): Promise<void> {
     this.loadingImages = true;
 
-    this.googleDriveService.selectMultipleImages().subscribe({
-      next: async (files: GoogleDriveFile[]) => {
-        const urlsDirectas: string[] = [];
+    // Usar el método manual para ver imágenes existentes
+    this.cloudinaryService.getExistingImages().subscribe({
+      next: async (images: CloudinaryImage[]) => {
+        if (images.length === 0) {
+          this.messageService.add({
+            severity: "info",
+            summary: "Información",
+            detail: "No se ingresaron URLs de imágenes",
+          });
+          this.loadingImages = false;
+          return;
+        }
 
-        for (const file of files) {
+        // Agregar todas las URLs ingresadas
+        const urlsSeguras: string[] = [];
+
+        for (const image of images) {
           try {
-            const workingUrl = await this.googleDriveService.getWorkingImageUrl(
-              file.url,
-            );
-            urlsDirectas.push(workingUrl);
+            const secureUrl = this.cloudinaryService.convertToSecureUrl(image.secure_url);
+            urlsSeguras.push(secureUrl);
           } catch (error) {
-            console.error(`Error procesando archivo ${file.name}:`, error);
-            // Aún así agregamos la URL convertida básica
-            const fallbackUrl = this.googleDriveService.convertToDirectUrl(
-              file.url,
-            );
-            urlsDirectas.push(fallbackUrl);
+            console.error(`Error procesando imagen ${image.public_id}:`, error);
+            urlsSeguras.push(image.secure_url);
           }
         }
 
         this.imagenesSeleccionadas = [
           ...this.imagenesSeleccionadas,
-          ...urlsDirectas,
+          ...urlsSeguras,
+        ];
+
+        const allUrlsString = this.imagenesSeleccionadas.join(",");
+        this.productForm.patchValue({ urlDrive: allUrlsString });
+
+        this.messageService.add({
+          severity: "success",
+          summary: "Éxito",
+          detail: `Se agregaron ${images.length} imágenes desde URLs`,
+        });
+
+        this.loadingImages = false;
+      },
+      error: (error) => {
+        console.error("Error al procesar URLs:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: "Error",
+          detail: "No se pudieron procesar las URLs de imágenes",
+        });
+        this.loadingImages = false;
+      },
+    });
+  }
+
+  async abrirSelectorCloudinary(): Promise<void> {
+    this.loadingImages = true;
+
+    this.cloudinaryService.getAllImages().subscribe({
+      next: async (images: CloudinaryImage[]) => {
+        const urlsSeguras: string[] = [];
+
+        for (const image of images) {
+          try {
+            const secureUrl = this.cloudinaryService.convertToSecureUrl(image.secure_url);
+            urlsSeguras.push(secureUrl);
+          } catch (error) {
+            console.error(`Error procesando imagen ${image.public_id}:`, error);
+            // Aún así agregamos la URL segura
+            urlsSeguras.push(image.secure_url);
+          }
+        }
+
+        this.imagenesSeleccionadas = [
+          ...this.imagenesSeleccionadas,
+          ...urlsSeguras,
         ];
         // Concatenar todas las URLs en un solo string separado por comas
         const allUrlsString = this.imagenesSeleccionadas.join(",");
@@ -350,7 +402,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
         this.messageService.add({
           severity: "success",
           summary: "Éxito",
-          detail: `Se seleccionaron ${files.length} imágenes`,
+          detail: `Se seleccionaron ${images.length} imágenes de Cloudinary`,
         });
       },
       error: (error) => {
@@ -358,7 +410,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
         this.messageService.add({
           severity: "error",
           summary: "Error",
-          detail: "No se pudieron seleccionar las imágenes de Google Drive",
+          detail: "No se pudieron seleccionar las imágenes de Cloudinary",
         });
         this.loadingImages = false;
       },
@@ -374,10 +426,10 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
 
   onUrlDriveChange(): void {
     const urlDriveValue = this.urlDrive?.value;
-    if (urlDriveValue && urlDriveValue.includes("drive.google.com")) {
-      const directUrl =
-        this.googleDriveService.convertToDirectUrl(urlDriveValue);
-      this.urlDrive?.setValue(directUrl);
+    if (urlDriveValue && (urlDriveValue.includes("cloudinary.com") || urlDriveValue.includes("res.cloudinary.com"))) {
+      const secureUrl =
+        this.cloudinaryService.convertToSecureUrl(urlDriveValue);
+      this.urlDrive?.setValue(secureUrl);
     }
   }
 
